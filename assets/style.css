@@ -1,0 +1,435 @@
+/* style.css — diseño moderno, paleta azul/gris */
+/* Fuentes */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+
+/* ===== HandyHub layout fixes ===== */
+:root{
+  --sidebar-w: 220px;
+}
+/* Shell */
+.app-shell {
+  display: flex;
+  min-height: 100vh;
+  background: var(--body-bg, #071726); /* mantiene tu tema oscuro */
+}
+
+/* Sidebar (fix para que sea fijo y no colapse contenido) */
+.sidebar {
+  width: var(--sidebar-w);
+  min-width: var(--sidebar-w);
+  max-width: var(--sidebar-w);
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  overflow: auto;
+  z-index: 30;
+  background: var(--sidebar-bg, #071b27);
+  border-right: 1px solid rgba(255,255,255,0.03);
+}
+
+/* Content area (espacio a la derecha del sidebar) */
+.content-area {
+  margin-left: var(--sidebar-w);
+  padding: 20px;
+  width: calc(100% - var(--sidebar-w));
+  min-height: 100vh;
+  box-sizing: border-box;
+  overflow: auto;
+}
+
+/* Reglas pequeñas para tablas y formularios dentro del contenido */
+.content-area .table { width: 100%; }
+.content-area .card, .content-area main, .content-area .container { background: transparent; }
+
+
+
+
+/*  */
+
+
+
+:root{
+  --bg:#0b1220;          /* fondo principal */
+  --panel:#0f1724;       /* paneles/dark card */
+  --muted:#94a3b8;       /* texto secundario */
+  --accent:#2563eb;      /* azul principal */
+  --accent-2:#0ea5e9;    /* cyan secundario */
+  --card:#0f1724;
+  --glass: rgba(255,255,255,0.03);
+  --success:#10b981;
+  --danger:#ef4444;
+}
+
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  font-family: 'Inter', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  background: linear-gradient(180deg, var(--bg) 0%, #071021 120%);
+  color:#e6eef8;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+}
+
+/* Layout base: sidebar + content */
+.app {
+  display:flex;
+  min-height:100vh;
+}
+
+/* SIDEBAR */
+.sidebar {
+  width:260px;
+  background: linear-gradient(180deg, #07112a 0%, #071526 100%);
+  border-right: 1px solid rgba(255,255,255,0.03);
+  padding:18px 14px;
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+}
+
+.brand {
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding-bottom:6px;
+  margin-bottom:6px;
+  border-bottom:1px solid rgba(255,255,255,0.02);
+}
+.brand img{width:44px;height:44px;border-radius:8px;object-fit:cover}
+.brand h1{font-size:18px;margin:0;font-weight:700;letter-spacing:0.2px;color:var(--accent)}
+
+.navlist{margin-top:8px;display:flex;flex-direction:column;gap:6px}
+.navitem{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  border-radius:10px;
+  padding:10px;
+  color:var(--muted);
+  text-decoration:none;
+  transition:all .18s ease;
+  font-size:14px;
+}
+.navitem:hover{background: rgba(255,255,255,0.02); color: #fff; transform: translateY(-1px)}
+.navitem.active{background: linear-gradient(90deg, rgba(37,99,235,0.12), rgba(14,165,233,0.06)); color:var(--accent)}
+.navitem .icon{
+  width:34px;height:34px;display:inline-grid;place-items:center;border-radius:8px;background:rgba(255,255,255,0.02);color:var(--accent-2);
+  font-weight:600;
+}
+
+/* Top area inside sidebar */
+.sidebar .user {
+  margin-top:auto;
+  border-top:1px solid rgba(255,255,255,0.02);
+  padding-top:10px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+.user .avatar{width:36px;height:36px;border-radius:8px; background:linear-gradient(135deg,#0ea5e9,#2563eb);display:inline-block}
+.user .info{font-size:13px;color:var(--muted)}
+.user .info .name{color:#fff;font-weight:600}
+
+/* Main content area */
+.main {
+  flex:1;
+  padding:22px;
+}
+
+/* Topbar inside main */
+.topbar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  margin-bottom:18px;
+}
+.topbar h2{margin:0;font-size:20px}
+.topbar .actions{display:flex;gap:8px;align-items:center}
+
+/* Cards */
+.grid {
+  display:grid;
+  grid-template-columns: repeat(12,1fr);
+  gap:14px;
+}
+.card {
+  background: var(--card);
+  border-radius:12px;
+  padding:16px;
+  box-shadow: 0 6px 20px rgba(3,7,18,0.6);
+  border: 1px solid rgba(255,255,255,0.02);
+}
+.col-3{grid-column: span 3}
+.col-4{grid-column: span 4}
+.col-6{grid-column: span 6}
+.col-8{grid-column: span 8}
+
+/* small card content */
+.kpi {display:flex;justify-content:space-between;align-items:center}
+.kpi .label{font-size:13px;color:var(--muted)}
+.kpi .value{font-size:28px;font-weight:700;color:#fff}
+
+/* tables */
+.table-dark {
+  width:100%;
+  border-collapse:collapse;
+  color:var(--muted);
+}
+.table-dark thead th{color:var(--muted); text-align:left; font-weight:600; font-size:13px; padding:8px 10px}
+.table-dark tbody td{padding:10px;color:#e6eef8;border-top:1px solid rgba(255,255,255,0.02)}
+
+/* Buttons */
+.btn {
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  border-radius:10px;
+  padding:8px 12px;
+  font-weight:600;
+  cursor:pointer;
+  border:none;
+}
+.btn-primary{
+  background: linear-gradient(90deg,var(--accent),var(--accent-2));
+  color:white;
+  box-shadow: 0 6px 18px rgba(14,165,233,0.12);
+}
+.btn-ghost{background:transparent;color:var(--muted);border:1px solid rgba(255,255,255,0.02)}
+
+/* responsive */
+@media (max-width:900px){
+  .sidebar{display:none}
+  .main{padding:12px}
+  .grid{grid-template-columns: repeat(6,1fr)}
+  .col-3{grid-column: span 3}
+  .col-4{grid-column: span 6}
+}
+
+
+/* --- Collapsible panel + form grid --- */
+.panel {
+  background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.015));
+  border-radius: 10px;
+  padding: 12px;
+  margin: 12px 0;
+  border: 1px solid rgba(255,255,255,0.02);
+  overflow: hidden;
+}
+
+.panel-header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  cursor:pointer;
+  padding:6px 4px;
+  user-select:none;
+}
+.panel-header h4{margin:0;font-size:15px}
+.panel-toggle {font-size:13px;color:#97a0b3;}
+
+.panel-body{
+  max-height:0;
+  transition: max-height .28s ease, padding .28s ease;
+  padding: 0 4px;
+}
+
+/* when opened */
+.panel.open .panel-body{
+  max-height: 800px;
+  padding: 12px 4px;
+}
+
+/* form grid */
+.form-grid{
+  display:grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap:10px;
+  align-items:start;
+}
+.form-row{display:flex;flex-direction:column;gap:6px}
+.form-row label{font-size:12px;color:#97a0b3}
+.form-row input, .form-row select, .form-row textarea{
+  padding:8px 10px;border-radius:8px;border:1px solid rgba(255,255,255,0.03);background:transparent;color:inherit;
+}
+.form-actions{display:flex;gap:8px;margin-top:10px}
+
+/* responsive */
+@media (max-width:900px){
+  .form-grid{grid-template-columns: 1fr}
+  .panel { padding:10px }
+}
+
+/* ===== ADICIONES CHATGPT: paneles, grids y ajustes ===== */
+.panel {
+  background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.015));
+  border-radius: 10px;
+  padding: 0;
+  margin: 12px 0;
+  border: 1px solid rgba(255,255,255,0.02);
+  overflow: hidden;
+}
+.panel-header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  cursor:pointer;
+  padding:12px;
+  user-select:none;
+}
+.panel-header h4{margin:0;font-size:15px}
+.panel-toggle {font-size:13px;color:#97a0b3}
+.panel-body{
+  max-height:0;
+  transition: max-height .28s ease, padding .28s ease;
+  padding: 0 12px;
+}
+.panel.open .panel-body{
+  max-height: 800px;
+  padding: 12px;
+}
+
+/* form grid */
+.form-grid{
+  display:grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap:10px;
+  align-items:start;
+}
+.form-row{display:flex;flex-direction:column;gap:6px}
+.form-row label{font-size:12px;color:#97a0b3}
+.form-row input, .form-row select, .form-row textarea{
+  padding:8px 10px;border-radius:8px;border:1px solid rgba(255,255,255,0.03);background:transparent;color:inherit;
+}
+.form-actions{display:flex;gap:8px;margin-top:10px}
+
+/* responsive */
+@media (max-width:900px){
+  .form-grid{grid-template-columns: 1fr}
+  .panel { padding:10px }
+  .sidebar{display:none}
+}
+
+/* minor fixes */
+.table-responsive { overflow-x:auto; }
+.btn-ghost{background:transparent;border:1px solid rgba(255,255,255,0.03);color:inherit}
+
+
+/* --------------------
+  Layout principal (sidebar + contenido)
+   -------------------- */
+.app-shell {
+  display: flex;
+  min-height: 100vh;
+  width: 100%;
+  background: var(--bg, #07121a);
+}
+
+/* Sidebar (fijo) */
+.sidebar {
+  width: 240px;              /* ancho del menu lateral */
+  flex: 0 0 240px;
+  background: linear-gradient(180deg, #0b2230 0%, #08121a 100%);
+  border-right: 1px solid rgba(255,255,255,0.03);
+  padding: 18px 12px;
+  box-sizing: border-box;
+}
+
+/* Area principal (contenido) */
+.content-area {
+  flex: 1 1 auto;
+  min-height: 100vh;
+  overflow: auto;
+  padding: 20px 26px;
+  box-sizing: border-box;
+}
+
+/* Asegurar que <main> ocupe el 100% del area */
+.content-area main { width:100%; }
+
+/* Tablas */
+.table-responsive { overflow:auto; }
+
+/* Paneles colapsables utilizados en las páginas */
+.panel {
+  background: rgba(255,255,255,0.01);
+  border-radius: 8px;
+  margin-bottom: 18px;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.02);
+}
+.panel-header {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:12px 16px;
+  cursor:pointer;
+  user-select:none;
+}
+.panel-body {
+  padding: 12px 16px;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 260ms ease, padding 260ms ease;
+}
+.panel.open .panel-body {
+  max-height: 900px; /* suficiente para el contenido interior */
+  padding: 16px;
+}
+
+/* Grid de formularios dentro de paneles */
+.form-grid {
+  display:grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap:12px;
+}
+.form-row label { display:block; font-size:0.9rem; margin-bottom:4px; color:rgba(255,255,255,0.8); }
+.form-row input, .form-row textarea, .form-row select {
+  width:100%;
+  padding:8px;
+  border-radius:6px;
+  border:1px solid rgba(255,255,255,0.04);
+  background: rgba(0,0,0,0.25);
+  color: #e6eef6;
+  box-sizing:border-box;
+}
+.form-actions { margin-top:12px; display:flex; gap:8px; }
+
+/* Responsive: apilar en pantallas pequeñas */
+@media (max-width: 900px) {
+  .form-grid { grid-template-columns: 1fr; }
+  .sidebar { width: 72px; flex: 0 0 72px; padding:10px; }
+  .app-shell .content-area { padding:12px; }
+}
+
+
+/* ----- Estilo para que "Abrir ▾" sea un botón igual a .btn btn-primary ----- */
+.panel-header .panel-toggle {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 8px;
+  background: linear-gradient(180deg,#0b84ff,#0b6ee0);
+  color: #fff;
+  font-weight:600;
+  cursor: pointer;
+  box-shadow: 0 6px 14px rgba(11,132,255,0.12), inset 0 -1px 0 rgba(255,255,255,0.04);
+  border: none;
+  transition: transform .08s ease, opacity .08s ease;
+  user-select: none;
+  white-space: nowrap;
+}
+
+/* icono/arrow pequeño */
+.panel-header .panel-toggle::after{ content:''; display:inline-block; margin-left:8px; vertical-align:middle; }
+
+/* estado abierto / cerrar */
+.panel.open .panel-header .panel-toggle {
+  background: linear-gradient(180deg,#0a6ee0,#084fc2);
+}
+
+/* evita que el toggle se quede fuera si el header es estrecho */
+.panel .panel-header { gap:12px; align-items:center; }
