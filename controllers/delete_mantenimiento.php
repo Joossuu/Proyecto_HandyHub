@@ -5,16 +5,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $id = intval($_POST['id']);
 
   if ($id) {
-    // Marcar como inactivo (no borrar físicamente)
-    $stmt = $mysqli->prepare("UPDATE Usuario SET Estado = 0 WHERE ID_Usuario = ?");
+    $stmt = $mysqli->prepare("DELETE FROM Mantenimiento WHERE ID_Mantenimiento = ?");
     $stmt->bind_param("i", $id);
     $stmt->execute();
     $stmt->close();
 
-    header("Location: ../views/usuarios.php?eliminado=1");
+    header("Location: ../views/mantenimientos.php?eliminado=1");
     exit;
   } else {
-    header("Location: ../views/usuarios.php?error=1");
+    header("Location: ../views/mantenimientos.php?error=1");
     exit;
   }
 }

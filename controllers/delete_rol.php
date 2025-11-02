@@ -5,16 +5,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $id = intval($_POST['id']);
 
   if ($id) {
-    // Marcar como inactivo (no borrar físicamente)
-    $stmt = $mysqli->prepare("UPDATE Usuario SET Estado = 0 WHERE ID_Usuario = ?");
+    // Eliminar físicamente el rol
+    $stmt = $mysqli->prepare("DELETE FROM Rol WHERE ID_Rol = ?");
     $stmt->bind_param("i", $id);
     $stmt->execute();
     $stmt->close();
 
-    header("Location: ../views/usuarios.php?eliminado=1");
+    header("Location: ../views/roles.php?eliminado=1");
     exit;
   } else {
-    header("Location: ../views/usuarios.php?error=1");
+    header("Location: ../views/roles.php?error=1");
     exit;
   }
 }

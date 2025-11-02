@@ -1,114 +1,94 @@
 <?php
 session_start();
-if (isset($_SESSION['user_id'])) {
-  header("Location: dashboard.php");
-  exit;
+require_once __DIR__ . '/config/db_config.php';
+
+$error = '';
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+  $usuario = $_POST['Usuario_Login'];
+  $clave = $_POST['Contrasena'];
+
+  $stmt = $mysqli->prepare("SELECT u.ID_Usuario, u.Usuario_Login, r.Nombre_Rol, c.Password_Hash
+                            FROM Usuario u
+                            JOIN Credencial c ON u.ID_Usuario = c.ID_Usuario
+                            LEFT JOIN Rol r ON u.ID_Rol = r.ID_Rol
+                            WHERE u.Usuario_Login = ?");
+  $stmt->bind_param("s", $usuario);
+  $stmt->execute();
+  $stmt->store_result();
+
+  if ($stmt->num_rows > 0) {
+    $stmt->bind_result($id_usuario, $login, $rol, $hash);
+    $stmt->fetch();
+
+    if (password_verify($clave, $hash)) {
+      $_SESSION['usuario'] = $login;
+      $_SESSION['id_usuario'] = $id_usuario;
+      $_SESSION['rol'] = $rol;
+
+      // Registrar en bitácora
+      $accion = "Inicio de sesión";
+      $fecha = date('Y-m-d H:i:s');
+      $bitacora = $mysqli->prepare("INSERT INTO Bitacora (ID_Usuario, Accion, Fecha) VALUES (?, ?, ?)");
+      $bitacora->bind_param("iss", $id_usuario, $accion, $fecha);
+      $bitacora->execute();
+      $bitacora->close();
+
+      header("Location: views/dashboard.php");
+      exit;
+    } else {
+      $error = "Credenciales inválidas";
+    }
+  } else {
+    $error = "Credenciales inválidas";
+  }
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>HandyHub - Iniciar Sesión</title>
-  <link rel="stylesheet" href="assets/css/bootstrap.min.css">
-  <link rel="stylesheet" href="assets/css/style.css">
-  <style>
-    body {
-      background: radial-gradient(circle at top left, #1e293b, #0f172a);
-      font-family: 'Segoe UI', sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-    }
-    .login-container {
-      width: 360px;
-      background: rgba(30, 41, 59, 0.9);
-      padding: 40px 30px;
-      border-radius: 15px;
-      box-shadow: 0 4px 25px rgba(0,0,0,0.4);
-      color: white;
-    }
-    .login-container img {
-      width: 80px;
-      display: block;
-      margin: 0 auto 15px;
-      border-radius: 50%;
-      background: rgba(255,255,255,0.1);
-      padding: 10px;
-    }
-    .form-control {
-      background: rgba(255,255,255,0.1);
-      border: none;
-      color: white;
-    }
-    .form-control::placeholder {
-      color: rgba(255,255,255,0.5);
-    }
-    .btn-login {
-      width: 100%;
-      background: #0ea5e9;
-      color: white;
-      border: none;
-      transition: all 0.3s;
-    }
-    .btn-login:hover {
-      background: #0284c7;
-    }
-    .small-links {
-      display: flex;
-      justify-content: space-between;
-      font-size: 0.9em;
-    }
-  </style>
+  <title>Login - HandyHub</title>
+  <link rel="stylesheet" href="/Proyecto_HandyHub/assets/login.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body>
-  <div class="login-container text-center">
-    <img src="assets/img/images.jpg" alt="Logo">
-    <h3 class="mb-4">Iniciar Sesión</h3>
-    <div id="alert" class="alert alert-danger d-none"></div>
-    <form id="loginForm">
-      <div class="mb-3">
-        <input type="text" class="form-control" id="username" placeholder="Usuario" required>
-      </div>
-      <div class="mb-3">
-        <input type="password" class="form-control" id="password" placeholder="Contraseña" required>
-      </div>
-      <button type="submit" class="btn btn-login py-2">LOGIN</button>
-    </form>
-  </div>
+<body class="login-page">
 
-  <script src="assets/js/fetch-helpers.js"></script>
-  <script>
-  document.getElementById('loginForm').addEventListener('submit', async function(e){
-    e.preventDefault();
-    const alertEl = document.getElementById('alert');
-    alertEl.classList.add('d-none');
-    const user = document.getElementById('username').value.trim();
-    const pass = document.getElementById('password').value.trim();
-    try {
-      const res = await fetch('api/login.php', {
-        method: 'POST',
-        headers: {'Content-Type':'application/json'},
-        credentials: 'include',
-        body: JSON.stringify({username: user, password: pass})
-      });
-      const text = await res.text();
-      console.log(text);
-      const data = JSON.parse(text);
-      if (data.success) {
-        window.location.href = 'dashboard.php';
-      } else {
-        alertEl.innerText = data.error || "Credenciales inválidas";
-        alertEl.classList.remove('d-none');
-      }
-    } catch(err) {
-      alertEl.innerText = "Error de conexión";
-      alertEl.classList.remove('d-none');
-      console.error(err);
-    }
-  });
-  </script>
+<body>
+  <div class="container">
+    <div class="login-box">
+      <img src="images.jpg" alt="Logo">
+      <h2>Login</h2>
+
+      <?php if ($error): ?>
+        <div class="error"><?= htmlspecialchars($error) ?></div>
+      <?php endif; ?>
+
+      <form method="POST">
+        <div class="input-group">
+          <i class="fas fa-user"></i>
+          <input type="text" name="Usuario_Login" placeholder="Usuario" required>
+        </div>
+
+        <div class="input-group">
+          <i class="fas fa-lock"></i>
+          <input type="password" name="Contrasena" placeholder="Contraseña" required>
+        </div>
+
+        <div class="checkbox-group">
+          <input type="checkbox" id="remember">
+          <label for="remember">Recordarme</label>
+        </div>
+
+        <button type="submit">LOGIN</button>
+
+        <div class="links">
+          <p><a href="#">¿Olvidaste tu contraseña?</a></p>
+          <p>¿No tienes una cuenta? <a href="#">¡Regístrate!</a></p>
+        </div>
+      </form>
+    </div>
+  </div>
 </body>
 </html>

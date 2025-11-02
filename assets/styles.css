@@ -1,0 +1,472 @@
+/* === Base === */
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #f4f6f9;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* === Sidebar === */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 220px;
+  height: 100vh;
+  background-color: #1f2d3d;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: width 0.3s ease;
+  overflow: hidden;
+  z-index: 1000;
+}
+
+.sidebar.collapsed {
+  width: 70px;
+}
+
+.sidebar-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding-top: 10px;
+}
+
+.toggle-btn {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 20px;
+  cursor: pointer;
+  align-self: flex-start;
+  margin-left: 10px;
+}
+
+.logo {
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.sidebar.collapsed .logo {
+  font-size: 24px;
+  text-indent: -9999px;
+}
+
+/* === Navegación === */
+.nav-links {
+  list-style: none;
+  padding: 0;
+}
+
+.nav-links li {
+  margin: 10px 0;
+}
+
+.nav-links a {
+  color: #fff;
+  text-decoration: none;
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: background 0.3s;
+  position: relative;
+}
+
+.nav-links a:hover {
+  background-color: #34495e;
+}
+
+.sidebar.collapsed .nav-links span {
+  display: none;
+}
+
+.sidebar.collapsed .nav-links a:hover {
+  box-shadow: 0 0 10px rgba(0,0,0,0.3);
+}
+
+.sidebar.collapsed .nav-links a:hover::after {
+  content: attr(data-label);
+  position: fixed;
+  left: 80px;
+  top: calc(var(--mouse-y, 50%) - 10px);
+  background: #2c3e50;
+  color: #fff;
+  padding: 6px 12px;
+  border-radius: 6px;
+  white-space: nowrap;
+  font-size: 13px;
+  z-index: 9999;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+  pointer-events: none;
+}
+
+/* === Usuario === */
+.sidebar-user {
+  background-color: #16222e;
+  padding: 15px;
+  font-size: 13px;
+  border-top: 1px solid #34495e;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  justify-content: center;
+  text-align: center;
+}
+
+.user-icon {
+  font-size: 24px;
+}
+
+.user-info {
+  line-height: 1.4;
+}
+
+.sidebar.collapsed .user-info {
+  display: none;
+}
+
+/* === Contenido principal === */
+.main-content {
+  padding: 40px 40px 100px;
+  padding-left: 220px;
+  min-height: calc(100vh - 60px);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  background-color: #f4f6f9;
+  transition: padding-left 0.3s ease;
+}
+
+.main-content.collapsed {
+  padding-left: 70px;
+}
+
+.main-content h2, .main-content p {
+  text-align: center;
+  margin: 0;
+}
+
+/* === Tarjetas === */
+.dashboard-cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+  justify-content: center;
+  margin-top: 30px;
+}
+
+.card {
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 20px;
+  width: 230px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease;
+  text-align: center;
+}
+
+.card:hover {
+  transform: scale(1.03);
+}
+
+.card i {
+  font-size: 28px;
+  margin-bottom: 10px;
+  color: #3498db;
+}
+
+.card h3 {
+  margin: 0 0 10px;
+  font-size: 16px;
+  color: #333;
+}
+
+.card p {
+  font-size: 28px;
+  font-weight: bold;
+  color: #3498db;
+}
+
+/* === Acciones recientes === */
+.acciones {
+  margin-top: 50px;
+  max-width: 800px;
+  width: 100%;
+}
+
+.acciones h3 {
+  font-size: 18px;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.acciones ul {
+  list-style: none;
+  padding: 0;
+}
+
+.acciones li {
+  background: #fff;
+  padding: 10px 15px;
+  margin-bottom: 8px;
+  border-radius: 6px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+  font-size: 14px;
+  color: #333;
+  transition: all 0.3s ease;
+}
+
+.acciones li span {
+  font-weight: bold;
+  color: #2c3e50;
+}
+
+/* === Footer === */
+footer {
+  background-color: #1f2d3d;
+  color: #aaa;
+  text-align: center;
+  padding: 10px;
+  position: fixed;
+  bottom: 0;
+  left: 220px;
+  right: 0;
+  z-index: 10;
+  transition: left 0.3s ease;
+}
+
+footer.collapsed {
+  left: 70px;
+}
+
+/* === Usuarios === */
+.usuarios-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  width: 100%;
+  max-width: 1000px;
+}
+
+.usuarios-header h2 {
+  font-size: 22px;
+  margin: 0;
+}
+
+.usuarios-header .crear-btn {
+  background-color: #3498db;
+  color: #fff;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.usuarios-header .crear-btn:hover {
+  background-color: #2980b9;
+}
+
+.usuarios-busqueda {
+  margin-bottom: 20px;
+  width: 100%;
+  max-width: 1000px;
+}
+
+.usuarios-busqueda input {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.usuarios-tabla {
+  width: 100%;
+  max-width: 1000px;
+  border-collapse: collapse;
+  background-color: #fff;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.usuarios-tabla th,
+.usuarios-tabla td {
+  padding: 12px 16px;
+  text-align: left;
+  font-size: 14px;
+  border-bottom: 1px solid #eee;
+}
+
+.usuarios-tabla th {
+  background-color: #f4f6f9;
+  color: #333;
+}
+
+.usuarios-tabla tr:hover {
+  background-color: #f9f9f9;
+}
+
+.usuarios-tabla .acciones {
+  display: flex;
+  gap: 10px;
+}
+
+.usuarios-tabla .acciones button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  color: #3498db;
+  transition: color 0.2s ease;
+}
+
+.usuarios-tabla .acciones button:hover {
+  color: #1f2d3d;
+}
+
+/* === Modales === */
+/* === Modales === */
+/* === Modales === */
+/* === Modales === */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+/* Contenedor del modal */
+.modal {
+  background: #fff;
+  width: 100%;
+  max-width: 440px;
+  padding: 30px 32px;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* Título */
+.modal h3 {
+  font-size: 20px;
+  margin: 0;
+  text-align: center;
+}
+
+/* Campos */
+.modal form input,
+.modal form select {
+  width: 100%;
+  padding: 12px 14px;
+  font-size: 15px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  box-sizing: border-box;
+  margin-bottom: 12px;
+}
+
+/* Efecto al enfocar */
+.modal form input:focus,
+.modal form select:focus {
+  outline: none;
+  border-color: #3498db;
+  box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+}
+
+/* Botones */
+.modal-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.modal-actions button {
+  padding: 10px 18px;
+  font-size: 14px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+/* Botón cancelar */
+.modal-actions .cancel-btn {
+  background-color: #ccc;
+  color: #333;
+}
+
+.modal-actions .cancel-btn:hover {
+  background-color: #b3b3b3;
+}
+
+/* Botón guardar */
+.modal-actions .save-btn {
+  background-color: #3498db;
+  color: #fff;
+}
+
+.modal-actions .save-btn:hover {
+  background-color: #2980b9;
+}
+
+/* Botón eliminar */
+.modal-actions .delete-btn {
+  background-color: #e74c3c;
+  color: #fff;
+}
+
+.modal-actions .delete-btn:hover {
+  background-color: #c0392b;
+}
+
+/* Alertas en usuarios */
+/* Alertas */
+.alert {
+  padding: 12px 16px;
+  margin: 10px 0;
+  border-radius: 6px;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.alert.success {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.alert.error {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+.alert {
+  transition: opacity 0.5s ease;
+}
+
+.alert.ocultar {
+  opacity: 0;
+}
+
+
+/* Index*/
+/* Index */
